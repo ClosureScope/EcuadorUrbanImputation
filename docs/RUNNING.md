@@ -66,4 +66,4 @@ Generated datasets, environments and training artifacts are excluded from versio
 
 `results/metrics.csv` and `assets/` preserve the existing experiment results. They are not outputs of the quick checks. The tables under `data/metadata/` describe that reference dataset, including observed quality statistics; they are not automatically recalculated for a changed dataset.
 
-This reorganization has not rerun full raw-data preparation or the published multi-fold experiment. Data origins and the distinction between the reference work and this repository are recorded in [PROVENANCE.md](PROVENANCE.md).
+This reorganization has not rerun full raw-data preparation or the published multi-fold experiment. Data sources and checksums are recorded in `data/metadata/data_sources.csv`.

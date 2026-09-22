@@ -53,9 +53,9 @@
       <th colspan="3">连片隐藏</th>
     </tr>
     <tr>
-      <th>MAE<sub>z</sub> ↓</th><th>RMSE<sub>z</sub> ↓</th><th>R² ↑</th>
-      <th>MAE<sub>z</sub> ↓</th><th>RMSE<sub>z</sub> ↓</th><th>R² ↑</th>
-      <th>MAE<sub>z</sub> ↓</th><th>RMSE<sub>z</sub> ↓</th><th>R² ↑</th>
+      <th>MAE<sub>z</sub></th><th>RMSE<sub>z</sub></th><th>R²</th>
+      <th>MAE<sub>z</sub></th><th>RMSE<sub>z</sub></th><th>R²</th>
+      <th>MAE<sub>z</sub></th><th>RMSE<sub>z</sub></th><th>R²</th>
     </tr>
   </thead>
   <tbody>
@@ -148,7 +148,7 @@
 
 GAT + 门控在三种设置的三项指标上均优于对照方法。空间消融的差异较小：零散隐藏的 MAE_z 从 0.372 降至 0.361，连片隐藏从 0.401 降至 0.397；整城隐藏时缺少可见的同城邻居，估计主要依靠 2010 年基底。
 
-完整数值保存在 [results/metrics.csv](results/metrics.csv)。这些是已有实验结果，本次仓库整理未重新运行全量实验。
+完整数值保存在 [results/metrics.csv](results/metrics.csv)。
 
 下面展示基多人口指标的重建与误差：
 
@@ -199,7 +199,6 @@ uv run ecuador-evolution report --device cpu --parallel-backend serial
 ├── data/metadata/         # 数据字典、来源与质量记录
 ├── results/               # 实验结果表
 ├── assets/                # 重建结果与误差地图
-└── docs/                  # 运行说明与项目来源
+└── docs/                  # 详细运行说明
 ```
 
-原始数据和训练产物不随代码提交。项目与数据来源见 [PROVENANCE.md](docs/PROVENANCE.md)。
