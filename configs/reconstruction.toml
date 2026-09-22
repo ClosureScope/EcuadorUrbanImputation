@@ -1,0 +1,72 @@
+project = "ecuador-evolution"
+task = "masked-reconstruction"
+seed = 1605
+device = "auto"
+data_root = "data"
+target_crs = "EPSG:32717"
+city_codes = ["0101", "0901", "1701"]
+city_names = { "0101" = "Cuenca", "0901" = "Guayaquil", "1701" = "Quito" }
+
+[prepare]
+chunksize = 200000
+source_match_minimum = 0.95
+target_high_coverage = 0.98
+target_medium_coverage = 0.90
+high_max_contributors = 3
+medium_max_contributors = 8
+minimum_indicator_coverage = 0.90
+minimum_indicators = 8
+conservation_tolerance = 0.02
+raw_2022_geometry = "original_boundary.zip"
+
+[model]
+architectures = ["gat"]
+max_neighbors = 12
+seeds = [1605, 1606, 1607]
+
+[gat]
+widths = [128, 256]
+dropouts = [0.05, 0.15]
+learning_rates = [0.0003, 0.001]
+context_dropout = 0.25
+indicator_dropout = 0.10
+native_mae_weight = 0.10
+weight_decay = 0.0001
+batch_size = 512
+accumulation_steps = 1
+max_epochs = 200
+patience = 25
+gradient_clip = 1.0
+warmup_fraction = 0.05
+
+[baselines]
+ridge_alpha = 1.0
+non_spatial_mlp_width = 128
+non_spatial_mlp_max_iter = 500
+
+[evaluation]
+random_mask_fractions = [0.10, 0.20, 0.30]
+spatial_blocks = 5
+validation_fraction = 0.10
+
+[parallel]
+backend = "nvidia-mps"
+gpu_workers = "auto"
+max_gpu_workers = 8
+candidate_levels = [1, 2, 4, 8]
+cpu_workers = 4
+calibration_epochs = 3
+calibration = true
+max_gpu_memory_fraction = 0.85
+minimum_throughput_gain = 0.05
+retries = 2
+gpu_worker_cpu_threads = 1
+baseline_worker_cpu_threads = 3
+
+[paths]
+manifest = "configs/sources.toml"
+indicator_dictionary = "configs/indicators.toml"
+raw = "raw"
+interim = "interim"
+processed = "processed"
+artifacts = "../artifacts/reconstruction"

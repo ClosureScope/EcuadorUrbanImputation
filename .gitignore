@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+/data/raw/
+/data/interim/
+/data/processed/
+/data/final/
+/artifacts/
+*.part
+.DS_Store
+.ipynb_checkpoints/

@@ -1,0 +1,152 @@
+# Machine-readable harmonization contract. Source field/category details are
+# confirmed against the downloaded official dictionaries before full prepare.
+[[indicator]]
+name = "population"
+unit = "count"
+universe = "usual/de-facto residents"
+numerator = "persons"
+denominator = "none"
+comparability = "medium"
+recode = "count person records"
+source_2010 = { table = "Poblacion", fields = ["I01", "I02", "I03", "I04", "I05", "ID_HOG"], rule = "count eligible person records" }
+source_2022 = { table = "Población", fields = ["I01", "I02", "I03", "I04", "I05", "ID_HOG"], rule = "count usual-resident person records" }
+flags = ["2010-de-facto-vs-2022-usual-residence"]
+
+[[indicator]]
+name = "female_share"
+unit = "rate"
+universe = "persons"
+numerator = "female persons"
+denominator = "persons with reported sex"
+comparability = "medium"
+recode = "female / known sex"
+source_2010 = { table = "Poblacion", fields = ["P01"], numerator_categories = [2], denominator_categories = [1, 2] }
+source_2022 = { table = "Población", fields = ["P02"], numerator_categories = [2], denominator_categories = [1, 2] }
+flags = ["sex-at-enumeration-vs-sex-at-birth-wording"]
+
+[[indicator]]
+name = "age_0_14_share"
+unit = "rate"
+universe = "persons with reported age"
+numerator = "age 0 through 14"
+denominator = "persons with reported age"
+comparability = "medium"
+recode = "0 <= age <= 14"
+source_2010 = { table = "Poblacion", fields = ["P03"], numerator_range = [0, 14], denominator_range = [0, 120] }
+source_2022 = { table = "Población", fields = ["P03"], numerator_range = [0, 14], denominator_range = [0, 120] }
+
+[[indicator]]
+name = "age_65_plus_share"
+unit = "rate"
+universe = "persons with reported age"
+numerator = "age 65 or above"
+denominator = "persons with reported age"
+comparability = "medium"
+recode = "age >= 65"
+source_2010 = { table = "Poblacion", fields = ["P03"], numerator_range = [65, 120], denominator_range = [0, 120] }
+source_2022 = { table = "Población", fields = ["P03"], numerator_range = [65, 120], denominator_range = [0, 120] }
+
+[[indicator]]
+name = "household_count"
+unit = "count"
+universe = "census households"
+numerator = "households"
+denominator = "none"
+comparability = "high"
+recode = "count household records"
+source_2010 = { table = "Hogar", fields = ["ID_HOG", "ID_VIV"], rule = "count unique household links" }
+source_2022 = { table = "Hogar", fields = ["ID_HOG", "ID_VIV"], rule = "count unique household links" }
+
+[[indicator]]
+name = "average_household_size"
+unit = "average"
+universe = "persons in census households"
+numerator = "household members"
+denominator = "households"
+comparability = "medium"
+recode = "members / households"
+source_2010 = { table = "Poblacion+Hogar", fields = ["ID_HOG", "P02"], rule = "count household members through household link; exclude collective/sin-vivienda" }
+source_2022 = { table = "Hogar", fields = ["ID_HOG", "H1303"], rule = "sum H1303 / unique households" }
+flags = ["household-membership-recoding"]
+
+[[indicator]]
+name = "literacy_15_plus"
+unit = "rate"
+universe = "persons age 15+ with reported literacy"
+numerator = "literate persons age 15+"
+denominator = "persons age 15+ with reported literacy"
+comparability = "high"
+recode = "literate among eligible known responses"
+source_2010 = { table = "Poblacion", fields = ["P03", "P19"], numerator_categories = [1], denominator_categories = [1, 2], minimum_age = 15 }
+source_2022 = { table = "Población", fields = ["P03", "P19"], numerator_categories = [1], denominator_categories = [1, 2], minimum_age = 15 }
+
+[[indicator]]
+name = "homeownership_share"
+unit = "rate"
+universe = "households with reported tenure"
+numerator = "owned/being-paid households"
+denominator = "households with reported tenure"
+comparability = "medium"
+recode = "harmonized owned categories"
+source_2010 = { table = "Hogar", fields = ["H15"], numerator_categories = [1, 2, 3], denominator_categories = [1, 2, 3, 4, 5, 6, 7] }
+source_2022 = { table = "Hogar", fields = ["H09"], numerator_categories = [1, 2, 3], denominator_categories = [1, 2, 3, 4, 5, 6] }
+flags = ["anticresis-grouped-with-rent-in-2022"]
+
+[[indicator]]
+name = "renting_share"
+unit = "rate"
+universe = "households with reported tenure"
+numerator = "renting households"
+denominator = "households with reported tenure"
+comparability = "high"
+recode = "rented category"
+source_2010 = { table = "Hogar", fields = ["H15"], numerator_categories = [6, 7], denominator_categories = [1, 2, 3, 4, 5, 6, 7] }
+source_2022 = { table = "Hogar", fields = ["H09"], numerator_categories = [4], denominator_categories = [1, 2, 3, 4, 5, 6] }
+flags = ["includes-anticresis-both-years"]
+
+[[indicator]]
+name = "public_water_share"
+unit = "rate"
+universe = "occupied private dwellings linked to households"
+numerator = "public/community network dwellings"
+denominator = "occupied private dwellings linked to households"
+comparability = "medium"
+recode = "public or community network / eligible dwellings"
+source_2010 = { table = "Hogar->Vivienda", fields = ["ID_VIV", "VTV", "VCO", "V07"], private_categories = [1, 2, 3, 4, 5, 6, 7, 8], occupied_categories = [1], numerator_categories = [1], denominator_rule = "unique linked occupied private dwellings" }
+source_2022 = { table = "Hogar->Vivienda", fields = ["ID_VIV", "V01", "V0201", "V10"], private_categories = [1, 2, 3, 4, 5, 6, 7, 8], occupied_categories = [1], numerator_categories = [1, 2], denominator_rule = "unique linked occupied private dwellings" }
+flags = ["2022-includes-community-network"]
+
+[[indicator]]
+name = "public_electricity_share"
+unit = "rate"
+universe = "occupied private dwellings linked to households"
+numerator = "public-grid electricity dwellings"
+denominator = "occupied private dwellings linked to households"
+comparability = "high"
+recode = "public grid / eligible dwellings"
+source_2010 = { table = "Hogar->Vivienda", fields = ["ID_VIV", "VTV", "VCO", "V10"], private_categories = [1, 2, 3, 4, 5, 6, 7, 8], occupied_categories = [1], numerator_categories = [1], denominator_rule = "unique linked occupied private dwellings" }
+source_2022 = { table = "Hogar->Vivienda", fields = ["ID_VIV", "V01", "V0201", "V12"], private_categories = [1, 2, 3, 4, 5, 6, 7, 8], occupied_categories = [1], numerator_categories = [1], denominator_rule = "unique linked occupied private dwellings" }
+
+[[indicator]]
+name = "public_sewer_share"
+unit = "rate"
+universe = "occupied private dwellings linked to households"
+numerator = "public sewer dwellings"
+denominator = "occupied private dwellings linked to households"
+comparability = "medium"
+recode = "public sewer / eligible dwellings"
+source_2010 = { table = "Hogar->Vivienda", fields = ["ID_VIV", "VTV", "VCO", "V09"], private_categories = [1, 2, 3, 4, 5, 6, 7, 8], occupied_categories = [1], numerator_categories = [1], denominator_rule = "unique linked occupied private dwellings" }
+source_2022 = { table = "Hogar->Vivienda", fields = ["ID_VIV", "V01", "V0201", "V11"], private_categories = [1, 2, 3, 4, 5, 6, 7, 8], occupied_categories = [1], numerator_categories = [1], denominator_rule = "unique linked occupied private dwellings" }
+
+[[indicator]]
+name = "overcrowding_share"
+unit = "rate"
+universe = "households with reported members and sleeping rooms"
+numerator = "households above 3 persons per sleeping room"
+denominator = "households with valid members and sleeping rooms"
+comparability = "medium"
+recode = "members / sleeping rooms > 3; fallback indicator"
+fallback = true
+source_2010 = { table = "Poblacion+Hogar", fields = ["ID_HOG", "H01"], rule = "household members / sleeping rooms > 3; rooms must be positive" }
+source_2022 = { table = "Hogar", fields = ["HAC"], numerator_categories = [1], denominator_categories = [1, 2] }
+flags = ["fallback-only", "derived-vs-published-recode"]
